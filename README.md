@@ -4,7 +4,74 @@
   </a>
 </p>
 
-# LangExtract
+# LangExtract (Azure OpenAI Support Edition)
+
+## 背景說明
+原始的 **LangExtract** 套件僅支援 **OpenAI API**，並未提供 **Azure OpenAI** 的支援。  
+由於開發需求，我對套件進行了修改，使其能夠透過 **Azure OpenAI** 運行。  
+
+---
+
+## 修改內容
+此次修改主要包含以下部分：  
+
+1. **OpenAI Provider 改寫**  
+   - 在原本的 `openai_provider` 中，加入了 **讀取 `.env` 設定** 的功能。  
+   - 將原先呼叫 `openai.OpenAI()` 的部分改為使用 **`openai.AzureOpenAI()`**。  
+
+2. **模組引用方式調整**  
+   - 為了避免與原版套件混淆，將原始套件名稱改為 `langextract_edit`。  
+   - 使用時需 `import langextract_edit`，而非 `import langextract`。  
+
+> ⚠️ 注意：這個版本目前僅支援 Azure OpenAI，不再能直接運行原本的 OpenAI 。  
+
+---
+
+## 環境設定
+1. 請參考專案內的 **`.env_example`** 檔案，建立 `.env` 並填寫以下 Azure OpenAI 相關設定：
+   ```bash
+   AZURE_OPENAI_API_KEY=your_api_key
+   AZURE_OPENAI_ENDPOINT=https://your-resource-name.openai.azure.com/
+   AZURE_OPENAI_DEPLOYMENT=your_deployment_name
+    ```
+在 langextract.extract() 呼叫時，仍需傳入 model_id。
+這是因為 LangExtract 本身會透過 model_id 判斷應該使用哪個 provider（如 Gemini、Ollama、OpenAI、Azure OpenAI 等）。
+
+## 使用方法
+1. 安裝原始 LangExtract
+建議先安裝原版套件，以確保依賴完整：
+```bash
+
+pip install langextract
+```
+安裝過程中，會於 .venv\lib 下生成：
+
+langextract
+
+langextract-1.0.8.dist-info
+
+
+2. 加入修改版模組
+將 langextract_edit 資料夾放到自己的開發路徑下，作為 私有模組 使用。
+
+3. 測試運行
+執行以下測試程式，確認是否能正確呼叫 Azure OpenAI：
+
+```bash
+
+python test_azure_openai.py
+```
+開發取向
+這次修改的主要目標是 快速完成開發與測試，因此採用了較為簡單直接的做法：
+
+直接修改 provider 與匯入模組名稱
+
+透過 .env 進行配置
+
+沒有針對相容性或擴展性進行進一步優化
+
+後續若要回饋社群或與官方版本合併，可能還需要進一步調整程式架構與設定管理方式。
+
 
 [![PyPI version](https://img.shields.io/pypi/v/langextract.svg)](https://pypi.org/project/langextract/)
 [![GitHub stars](https://img.shields.io/github/stars/google/langextract.svg?style=social&label=Star)](https://github.com/google/langextract)

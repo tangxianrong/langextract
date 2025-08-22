@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Pre-commit hooks for LangExtract
+# Pre-commit hooks for langextract_edit
 # Install with: pre-commit install
 # Run manually: pre-commit run --all-files
 
